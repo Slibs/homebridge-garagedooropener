@@ -1,0 +1,51 @@
+{
+  "pluginAlias": "GarageDoorOpenerHomebridgePlugin",
+  "pluginType": "accessory",
+  "singular": true,
+  "schema": {
+    "type": "object",
+    "properties": {
+      "name": {
+        "title": "Name",
+        "type": "string",
+        "required": true,
+        "default": "Garage door"
+      },
+      "gpioPinOpen": {
+        "title": "GPIO pin for open signal",
+        "description": "The GPIO pin the plugin should use to open the garage door.",
+        "type": "integer",
+        "required": true
+      },
+      "emitTime": {
+        "title": "Emit time",
+        "description": "How many milliseconds should the GPIO output be HIGH.",
+        "type": "number",
+        "required": true,
+        "default": 500
+      },
+      "openingTime": {
+        "title": "Moving time",
+        "description": "How many seconds does the garage door to go from fully closed to fully open.",
+        "type": "number",
+        "default": 10
+      },
+      "allowCommandOverride": {
+        "title": "Allow command override",
+        "description": "Define if sending a new command while the garage door is still executing the previous command should be allowed.",
+        "type": "boolean",
+        "default": false
+      },
+      "gpioPinStateOpen": {
+        "title": "GPIO pin for open state input",
+        "description": "The GPIO pin the plugin should use to read the state of the garage door. A HIGH signal will indicate an OPEN garage door.",
+        "type": "integer"
+      },
+      "gpioPinStateClosed": {
+        "title": "GPIO pin for closed state input",
+        "description": "The GPIO pin the plugin should use to read the state of the garage door. A HIGH signal will indicate an OPEN garage door.",
+        "type": "integer"
+      }
+    }
+  }
+}

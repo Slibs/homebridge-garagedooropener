@@ -1,0 +1,41 @@
+{
+  "displayName": "Garage Door",
+  "name": "@shlic/homebridge-garagedooropener",
+  "version": "1.0.0",
+  "description": "Garage door opener utilizing gpio of rasperry pi zero w.",
+  "main": "dist/index.js",
+  "scripts": {
+    "lint": "eslint src/**.ts --max-warnings=0",
+    "watch": "npm run build && npm link && nodemon",
+    "build": "rimraf ./dist && tsc",
+    "prepublishOnly": "npm run lint && npm run build"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Slibs/homebridge-garagedooropener.git"
+  },
+  "engines": {
+    "node": "20.11.0",
+    "homebridge": "^1.7.0"
+  },
+  "keywords": [
+    "garage",
+    "door",
+    "gpio",
+    "homebridge",
+    "raspberrypi"
+  ],
+  "author": "Ivor Šlibar",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Slibs/homebridge-garagedooropener/issues"
+  },
+  "homepage": "https://github.com/Slibs/homebridge-garagedooropener#readme",
+  "devDependencies": {
+    "@typescript-eslint/eslint-plugin": "^6.19.1",
+    "eslint": "^8.56.0",
+    "homebridge": "^1.7.0",
+    "rimraf": "^5.0.5",
+    "typescript": "^4.5.5"
+  }
+}
