@@ -21,6 +21,8 @@ export class GarageDoorOpenerAccessory implements AccessoryPlugin {
     public readonly accessory: AccessoryConfig,
     public readonly api: API,
   ) {
+    this.log.debug('GarageDoorOpenerAccessory is initializing.');
+
     this.relayPin = 4; // GPIO pin for relay
     this.openSensorPin = 23; // GPIO pin for open sensor
     this.closedSensorPin = 18; // GPIO pin for closed sensor
@@ -30,8 +32,10 @@ export class GarageDoorOpenerAccessory implements AccessoryPlugin {
     GPIO.setup(this.openSensorPin, GPIO.DIR_IN, GPIO.EDGE_BOTH);
     GPIO.setup(this.closedSensorPin, GPIO.DIR_IN, GPIO.EDGE_BOTH);
 
+    this.log.debug('GarageDoorOpenerAccessory GPIO initialized.');
+
     // Configure characteristics
-    this.garageDoor = new this.api.hap.Service.GarageDoorOpener(this.accessory.name || 'Garage Door');
+    this.garageDoor = new this.api.hap.Service.GarageDoorOpener(this.accessory.name || 'GarageDoor');
     this.garageDoor.getCharacteristic(this.api.hap.Characteristic.CurrentDoorState)
       .onGet(this.getCurrentState.bind(this));
     this.garageDoor.getCharacteristic(this.api.hap.Characteristic.TargetDoorState)
@@ -40,6 +44,8 @@ export class GarageDoorOpenerAccessory implements AccessoryPlugin {
     this.garageDoor.getCharacteristic(this.api.hap.Characteristic.ObstructionDetected)
       .onGet(() => false);
 
+    this.log.debug('GarageDoorOpenerAccessory characteristics configured.');
+
     GPIO.on('change', (channel, value) => {
       if (channel === this.closedSensorPin) {
         this.handleClosedSensorChange(value);
@@ -47,6 +53,7 @@ export class GarageDoorOpenerAccessory implements AccessoryPlugin {
         this.handleOpenSensorChange(value);
       }
     });
+    this.log.info('GarageDoorOpenerAccessory is initializing done.');
   }
 
   getServices(): Service[] {
@@ -58,6 +65,8 @@ export class GarageDoorOpenerAccessory implements AccessoryPlugin {
   }
 
   setTargetState() {
+    this.log.info('Target State Trigered');
+
     if (this.currentDoorState === this.api.hap.Characteristic.CurrentDoorState.CLOSED) {
       // If the door is currently closed, set the target state to open
       this.targetDoorState = this.api.hap.Characteristic.CurrentDoorState.OPEN;
@@ -78,6 +87,8 @@ export class GarageDoorOpenerAccessory implements AccessoryPlugin {
   }
 
   private handleOpenSensorChange(value: boolean) {
+    this.log.debug('Open sensor change detected');
+
     if (value) {
       // Raising edge (Door is open)
       this.currentDoorState = this.api.hap.Characteristic.CurrentDoorState.OPEN;
@@ -90,6 +101,8 @@ export class GarageDoorOpenerAccessory implements AccessoryPlugin {
   }
 
   private handleClosedSensorChange(value: boolean) {
+    this.log.debug('Closed sensor change detected');
+
     if (value) {
       // Raising edge (Door is closed)
       this.currentDoorState = this.api.hap.Characteristic.CurrentDoorState.CLOSED;
@@ -107,6 +120,7 @@ export class GarageDoorOpenerAccessory implements AccessoryPlugin {
   }
 
   private triggerRelay() {
+    this.log.debug('Triggering relay...');
     // Implement the logic to trigger the relay here
     // For example, you can use a GPIO output to trigger the relay for 250ms
     GPIO.write(this.relayPin, true, (err) => {
