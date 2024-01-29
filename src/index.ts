@@ -1,11 +1,7 @@
 import { API } from 'homebridge';
+import {ACCESSORY_NAME, PLUGIN_NAME} from './settings';
+import { GarageDoorOpenerAccessory } from './platformAccessory';
 
-import { PLATFORM_NAME } from './settings';
-import { GarageDoorOpenerHomebridgePlugin } from './platform';
-
-/**
- * This method registers the platform with Homebridge
- */
 export = (api: API) => {
-  api.registerPlatform(PLATFORM_NAME, GarageDoorOpenerHomebridgePlugin);
+  api.registerAccessory(PLUGIN_NAME, ACCESSORY_NAME, GarageDoorOpenerAccessory);
 };
